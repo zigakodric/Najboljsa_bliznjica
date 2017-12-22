@@ -1,10 +1,4 @@
-graph = {'A': ['B', 'C', 'E'],
-         'B': ['A','D', 'E'],
-         'C': ['A', 'F', 'G'],
-         'D': ['B'],
-         'E': ['A', 'B','D'],
-         'F': ['C'],
-         'G': ['C']}
+k = list(graph.keys())
 
 def bfs_shortest_path(graph, start, goal):
     # keep track of explored nodes
@@ -39,5 +33,8 @@ def bfs_shortest_path(graph, start, goal):
  
     # in case there's no path between the 2 nodes
     return "So sorry, but a connecting path doesn't exist :("
- 
-print(len(bfs_shortest_path(graph, 'G', 'D'))-1)  # returns ['G', 'C', 'A', 'B', 'D']
+sez = []
+for i in range(1,len(k)):
+    sez.append(len(bfs_shortest_path(graph, k[0],k[i]))-1)
+
+print(sez)
