@@ -48,18 +48,23 @@ def dolzine(graph):
     for i in range(1,len(k)):
         s.append(len(bfs_shortest_path(graph, k[0],k[i]))-1)
     return(sum(s))
-se2=[]
-for i in range(0,len(k)):
-    for j in range(0,len(k)):
-        if k[j] not in graph.get(k[i]):
-            dic = graph
-            graph[k[i]].append(k[j])
-            se2.append(dolzine(graph))
-            graph = dic
 
-print(se2)
-                       
-            
+def bliznjica(graph):
+    se2=[]
+    povezave = []
+    for i in range(0,len(k)):
+        for j in range(0,len(k)):
+            if k[j] not in graph.get(k[i]) and k[j] != k[i]:
+                if (k[i],k[j]) not in povezave:
+                    dic = graph
+                    graph[k[i]].append(k[j])
+                    graph[k[j]].append(k[i])
+                    se2.append((k[j],k[i],dolzine(graph)))
+                    graph = dic
+                    povezave.append((k[i],k[j]))
+                    povezave.append((k[j],k[i]))
+                    print(povezave)
+                    print(se2)
+    return(min(se2))
 
-
-
+print(bliznjica(graph))
