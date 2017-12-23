@@ -1,9 +1,9 @@
-graph = {'A': ['B', 'C', 'E'],
-         'B': ['A','D', 'E'],
-         'C': ['A', 'F', 'G'],
-         'D': ['B'],
-         'E': ['A', 'B','D'],
-         'F': ['C'],
+graph = {'A': ['D'],
+         'B': ['D'],
+         'C': ['D',"G"],
+         'D': ['A', "B", "C", "E"],
+         'E': ['D',"F"],
+         'F': ['D'],
          'G': ['C']}
 
 k = list(graph.keys())
@@ -50,21 +50,21 @@ def dolzine(graph):
     return(sum(s))
 
 def bliznjica(graph):
-    se2=[]
-    povezave = []
+    m = (0,0,99999999999999)
+    povezave = [] #Seznam že preverjenih povezav
     for i in range(0,len(k)):
         for j in range(0,len(k)):
-            if k[j] not in graph.get(k[i]) and k[j] != k[i]:
+            if k[j] not in graph.get(k[i]) and k[j] != k[i]: 
                 if (k[i],k[j]) not in povezave:
                     dic = graph
-                    graph[k[i]].append(k[j])
+                    graph[k[i]].append(k[j]) #graf neusmerjen, dodamo povezavo ij in ji
                     graph[k[j]].append(k[i])
-                    se2.append((k[j],k[i],dolzine(graph)))
+                    dol = dolzine(graph) #izračunamo vsoto vseh poti
                     graph = dic
-                    povezave.append((k[i],k[j]))
+                    povezave.append((k[i],k[j])) #dodamo povezave v seznam že preverjenih povezav
                     povezave.append((k[j],k[i]))
-                    print(povezave)
-                    print(se2)
-    return(min(se2))
+                    if dol < m[2]:   #preverimo če jo nove bližnjica boljša
+                        m = (k[j],k[i], dol)
+    return(m)
 
 print(bliznjica(graph))
