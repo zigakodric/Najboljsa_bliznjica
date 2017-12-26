@@ -66,10 +66,16 @@ def bliznjica(graph):
                     if dol < m[2]:   #preverimo če je nova bližnjica boljša
                         m = (k[j],k[i], dol)
     return(m)
+def dve_bliznjici1(graph):            #funkcija uporabi funkcijo za iskanje ene bližnjice. Najprej poišče prvo bližnjico, jo doda v drevo in nato poišče v novem grafu 
+    najboljsi_bliznjici = (0,0,0,0,0) #najboljšo bližnjci. Vrne peterico prve najboljše bližnjice, druge ter vsoto razdalj do vseh točk.
+    prva = bliznjica(graph)           #Poiščemo prvo bližnjico
+    graph[prva[0]].append(prva[1])    #Dodamo v drevo
+    graph[prva[1]].append(prva[0])  
+    druga = bliznjica(graph)          #Poiščemo drugo bližnjico
+    najboljsi_bliznjici = (prva[0],prva[1],druga[0],druga[1],druga[2])
+    return(najboljsi_bliznjici)
 
-                
-    
-print(bliznjica(graph))
+print(dve_bliznjici1(graph))
 
 #Kodo je treba še izboljšati, samo osnutek
 m2 = (0,0,0,0,99999999999999)
