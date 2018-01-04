@@ -247,18 +247,15 @@ Poglejmo si še časovno zahtevnost funkcij. Pogledala sva si, koliko časa potr
 \centering
 \caption{My caption}
 \label{my-label}
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
-\hline
-                        & 4      & 5      & 6      & 7      & 8      & 9      & 10    & 11    & 12   & 13    & 14    \\ \hline
-najboljsa\_bliznjica1() & 0.0008 & 0.0012 & 0.0023 & 0.0035 & 0.0056 & 0.0095 & 0.012 & 0.015 & 0018 & 0.026 & 0.04  \\ \hline
-najboljsa\_bliznjica2() & 0.0009 & 0.0037 & 0.0123 & 0.0356 & 0.094  & 0.24   & 0.65  & 1.29  & 2.68 & 5.3   & 10.15 \\ \hline
+\begin{tabular}{llllllllllll}
+                        & 4      & 5      & 6      & 7      & 8      & 9      & 10    & 11    & 12   & 13    & 14    \\ 
+najboljsa\_bliznjica1() & 0.0008 & 0.0012 & 0.0023 & 0.0035 & 0.0056 & 0.0095 & 0.012 & 0.015 & 0018 & 0.026 & 0.04  \\ 
+najboljsa\_bliznjica2() & 0.0009 & 0.0037 & 0.0123 & 0.0356 & 0.094  & 0.24   & 0.65  & 1.29  & 2.68 & 5.3   & 10.15 \\ 
 \end{tabular}
 \end{table}
 \newline
 
-Če zgeneriramo 10 grafov z 15 vozlišči bo funkcija dve_bliznjici1() v povprečju porabila 0.037 sekunde, medtem ko funkcija dve_bliznjici2() porabi 18.9 sekund. Izkaže se torej, da se nam sploh v večjih grafih bolj splača uporabiti fukncijo dve_bliznjici1(), saj je napaka relativno majhna, hkrati pa je funkcija veliko hitrejša.
-
-
+Če zgeneriramo 10 grafov z 15 vozlišči bo funkcija$ dve_bliznjici1()$ v povprečju porabila 0.037 sekunde, medtem ko funkcija $dve_bliznjici2()$ porabi 18.9 sekund. Izkaže se torej, da se nam sploh v večjih grafih bolj splača uporabiti fukncijo $dve_bliznjici1()$, saj je napaka relativno majhna, hkrati pa je funkcija veliko hitrejša.
 \section{Ugotovitve}
  Koliko se povprečna razdalja med vozlišči zmanjša, ko vključimo v drevo najboljšo bližnjico?
 \newline
