@@ -101,23 +101,7 @@ def bliznjica(graph):
     return(m)
 \end{verbatim}
 
-Poglejmo, kako je če dodamo 2 bližnjici v drevo. Najprej poiščemo prvo bližnjico z že napisanim programom \texttt{bliznjica}, jo dodamo v drevo in nato z istim postopkom poiščemo še drugo bližnjico na novem grafu. Koda nam vrne peterico: prva dva člena sta vozlišči, med katerima poteka prva bližnjica, druga dva vozlišči med katerima poteka druga bližnjica ter peti člen minimalna povprečna razdalja med vozlišči. 
-
-\begin{verbatim}
-def dve_bliznjici1(graph, prva_bliznjica):
-    k = list(graph.keys())
-    najboljsi_bliznjici = (0,0,0,0,0)
-    prva = prva_bliznjica           #Prvo bližnjico že poznamo
-    graph[prva[0]].append(prva[1])    #Dodamo v drevo
-    graph[prva[1]].append(prva[0])
-    druga = bliznjica(graph)          #Poiščemo drugo bližnjico
-    najboljsi_bliznjici = (prva[0],prva[1],druga[0],druga[1],druga[2])
-    graph[prva[0]].remove(prva[1])   #Izbrišemo bližnjico iz grafa
-    graph[prva[1]].remove(prva[0])
-    return(najboljsi_bliznjici)
-\end{verbatim}
-
-Naslednja funkcija je sestavljena na podoben način kot za eno bližnjico. Preveri vse možne povezave, hkrati pa preverja, če je to povezavo že pregledala. Z zgornjo funkcijo se razlikuje v tem, da zgornja funkcija že predpostavi, da poznamo prvo najboljšo bližnjico, tukaj pa na novo izračunamo 2 najboljši bližnjici.
+Poglejmo, kako je če dodamo 2 bližnjici v drevo. Funkcija je sestavljena na podoben način kot za eno bližnjico. Preveri vse možne povezave, hkrati pa preverja, če je to povezavo že pregledala. 
 \small
 \begin{verbatim}
 def dve_bliznjici2(graph):
@@ -158,6 +142,22 @@ def dve_bliznjici2(graph):
     return(m2)
 \end{verbatim}
 \normalsize
+Ker pa je funkcija za iskanje dveh bližnjic časovno zahtevna, naju je zanimalo če lahko poiščemo dober plibližek dveh najboljših bližnjic. Zato sva sestavilo funkcijo \texttt{najboljsa_bliznjica1(). Najprej poiščemo prvo bližnjico z že napisanim programom \texttt{bliznjica}, jo dodamo v drevo in nato z istim postopkom poiščemo še drugo bližnjico na novem grafu. Koda nam vrne peterico: prva dva člena sta vozlišči, med katerima poteka prva bližnjica, druga dva vozlišči med katerima poteka druga bližnjica ter peti člen minimalna povprečna razdalja med vozlišči. V nadaljevanju sva tudi analizirala, kako dober približek bližnjic nam vrne ta funkcija.
+
+\begin{verbatim}
+def dve_bliznjici1(graph, prva_bliznjica):
+    k = list(graph.keys())
+    najboljsi_bliznjici = (0,0,0,0,0)
+    prva = prva_bliznjica           #Prvo bližnjico že poznamo
+    graph[prva[0]].append(prva[1])    #Dodamo v drevo
+    graph[prva[1]].append(prva[0])
+    druga = bliznjica(graph)          #Poiščemo drugo bližnjico
+    najboljsi_bliznjici = (prva[0],prva[1],druga[0],druga[1],druga[2])
+    graph[prva[0]].remove(prva[1])   #Izbrišemo bližnjico iz grafa
+    graph[prva[1]].remove(prva[0])
+    return(najboljsi_bliznjici)
+\end{verbatim}
+
 
 %V primeru, ko na drevo, ki smo ga izbrali zgoraj, dodamo le eno bližnjico, nam funkcija \texttt{bliznjica} vrne \texttt{('C', 'A', 1.25) }, torej je najboljša bližnjica med C in A in sicer v tem primeru pride povprečna razdalja med vozlišči 1.25. Če dodamo dve bližnjici v drevo, dobimo \texttt{('C', 'A', 'E', 'A', 1.0)}, torej dodamo še bližnjico med A in E, ter tako dobimo minimalno povprečno razdaljo med vozlišči 1.0.
 
