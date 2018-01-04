@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 
 
+
 \begin{document}
 \title{ ISKANJE NAJBOLJŠE BLIŽNJICE V DREVESU \\ \large Projekt pri finančnem praktikumu \\ 9.skupina}
 \author{Žiga Kodrič \and Katarina Kromar}
@@ -25,7 +26,7 @@ Take an arbitrary tree T and assume that all the edge weights are 1. We want to 
 \subsection{Opis problema}
 Vzamemo drevo T in predpostavimo, da imajo vse povezave utež 1. Radi bi dodali neko povezavo e (bližnjico) na drevo T, ki bi minimizirala povprečno razdaljo med vozlišči. Torej bi radi izbrali tako povezavo e, da bo vsota razdalj v T+e med vsemi pari vozlišč minimizirana. Lahko poskusimo najti tako povezavo e tako, da poskusimo vse možne povezave. 
 \\[0.5cm]
-Ta postopek bova poskusila na nekaterih naključnih drevesih, kjer bova kodo za generiranje takih drevesih poskusila najti na internetu. Poskusila bova ugotoviti, koliko se povprečna razdalja med vozlišči zmanjša, ko vključimo v drevo najboljšo bližnjico. Poskusila bova tudi z vključitvijo dveh bližnjic, kar pa bo seveda zaradi zahtevnosti programa potrebno poskusiti na manjših drevesih.
+Ta postopek bova poskusila na nekaterih naključnih drevesih, kjer bova kodo oziroma funkcijo za generiranje takih drevesih poskusila najti na internetu. Poskusila bova ugotoviti, koliko se povprečna razdalja med vozlišči zmanjša, ko vključimo v drevo najboljšo bližnjico. Poskusila bova tudi z vključitvijo dveh bližnjic, kar pa bo seveda zaradi zahtevnosti programa potrebno poskusiti na manjših drevesih.
 
 \section{Predstavitev grafov na računalniku in generiranje podatkov}
 Grafe lahko predstavimo z matriko sosednosti ali pa s seznami sosednosti. Pri projektu bova uporabljala sezname, ker so bolj optimalni, saj zasedejo manj pomnilnika. Za vsako točko imamo torej seznam naslednikov in predhodnikov. Pri tem porabimo le $O(\mid V \mid + \mid E \mid)$ pomnilnika.
@@ -33,7 +34,7 @@ Grafe lahko predstavimo z matriko sosednosti ali pa s seznami sosednosti. Pri pr
 Pri najinem projektu potrebujeva naključna drevesa. Poiskala bova kodo/funkcijo, ki bo vrnila naključno drevo na n točkah v obliki seznama sosedov.
 
 \section{Osnovna ideja algoritma}
-Algoritem sva si zamislila na naslednji način. Najprej bova zgenerirala naključno drevo na n točkah. Algoritem si bo nato izbral prvo točko. Tej točki bo dodal bližnjico in preko algoritma BFS izračunal vse možne razdalje, ter vrnil povprečje le teh. Nato bo dodal naslednjo bližnjico (in prejšnjo seveda izbrisal), ter ponovno izračunal povprečje razdalj. V primeru, da bo povprečje manjše, bo shranil to bližnjico, v nasprotnem primeru pa jo bo ovrgel. Tako bo nadaljeval z računanjem dokler ne bo preveril vseh možnih bližnjic. Ko bo preveril vse možne bližnjice, bo nadaljeval na naslednjo točko in ponovno preveril vse možnosti. Algoritem se bo končal, ko bo preveril vse možnosti na vseh točkah. 
+Algoritem sva si zamislila na naslednji način. Najprej bova zgenerirala naključno drevo na n točkah. Algoritem si bo nato izbral prvo točko. Tej točki bo dodal bližnjico in preko algoritma BFS izračunal vse možne razdalje, ter vrnil povprečje le teh. V nadaljnem delu sva ugotovila, da ne potrebujeva celotnega algoritma BFS, saj lahko uporabimo funkcijo v Sage-u \texttt{graph.average\_distance()}, ki izračuna povprečno razdaljo med vozlišči. Algoritem bo nato dodal naslednjo bližnjico (in prejšnjo seveda izbrisal), ter ponovno izračunal povprečje razdalj. V primeru, da bo povprečje manjše, bo shranil to bližnjico, v nasprotnem primeru pa jo bo ovrgel. Tako bo nadaljeval z računanjem dokler ne bo preveril vseh možnih bližnjic. Ko bo preveril vse možne bližnjice, bo nadaljeval na naslednjo točko in ponovno preveril vse možnosti. Algoritem se bo končal, ko bo preveril vse možnosti na vseh točkah. 
 \newline
 Program si bo hkrati zapisoval katere bližnjice je že pregledal. Če bo torej izračunal razdalje, ko bo dodal bližnjico $uv$,$u \in V(G),v\in V(G)$, bližnjice $vu$ ne bo ponovno pregledal.
 \newline
@@ -41,101 +42,45 @@ Programirala bova v programskem jeziku Sage, ki je dostopen na spletni strani
 \url{https://cocalc.com/}
  in sicer zaradi enostavnosti generiranja naključnih dreves.
 
-\section{BFS (Breadth-first search ali pregled v širino)}
-BFS se uporablja za neutežene grafe. Za vhod vzamemo neutežen graf $G, s\in V(G)$ pa je izvor/ začetno vozlišče. Za izhod dobimo drevo najkrajših poti v $G$ do $s$.
-Ideja:
-\begin{itemize}
-\item $\omega_i = \lbrace v\in V(G) \vert d_G (s,v)=i \rbrace, i\in \mathbb{N} \bigcup \lbrace0\rbrace,$
-\item $\omega_0=\lbrace s\rbrace$
-\item konstruiramo $\omega_1 ,\omega_2,\omega_3,\dotsc $  in ko najdemo $\omega_i= \emptyset $, lahko končamo
-\item $ v\in \omega_i \Leftrightarrow (\exists uv\in E(G)$  in $ u\in \omega_{i-1} )$  in $v \notin \omega_{i-1 }$, $v \notin \omega_{i-2 },\dotsc ,v \notin \omega_{0}$
-\end{itemize}
-Algoritem BFS izračuna drevo najkrajših poti v neuteženem grafu, ki je lahko usmerjen ali neusmerjen, v linearnem času $O(|V|+ |E|)$.
-\newline
-Najin algoritem za pregled v širino bo porabil $O(n^2)+ O(n^2)= O(n^4)$ operacij, torej bova morala paziti, da ne bova uporabila algoritma na prevelikih drevesih. Ko vključimo še eno bližnjico, porabimo dodatno še $O(n^2)$ operacij, torej skupno porabi $O(n^6)$ operacij (potrebno bo uporabiti še manjša drevesa, zaradi časovne zahtevnosti).
-
 \section{Generiranje podatkov}
-
 Za generiranje naključnih dreves bova uporabila programski jezik Sage in sicer z ukazom:
-\newline
 \begin{verbatim}
 graphs.RandomTree(n).to_dictionary(),
 \end{verbatim}
 kar nam vrne naključno drevo na n vozliščih, pretvorjeno v seznam sosednosti. Vozlišča so označena od 0 do n-1.
 
 \section{Algoritem}
-Najprej sva zaradi lažje predstave in enostavnosti vzela kar primer drevesa:
-
-\begin{verbatim} 
-graph = {"A": ["B", "D"],
-         "B": ["A","C"],
-         "C": ["B"],
-         "D": ["A","E"],
-         "E": ["D"]}
-\end{verbatim}
-
-Za lažjo predstavo ga narišimo:
-\Tree [.A [.B  C ] [.D  E ] ]
-\newline
-Da lahko narišemo drevo moramo naložiti paket \texttt{qtree}.
-\newline
-
-Definiramo najkrajšo pot po metodi BFS, ki sprejme za vhod graf, start (pri katerem vozlišču začnemo) ter cilj (pri katerem vozlišču hočemo končati), za izhod pa nam vrne najkrajšo pot od starta do cilja.
-\begin{verbatim}
-def bfs_najkrajsa_pot(graph, start, cilj):
-    # sledi že obiskanim vozliščem
-    obiskani = []
-    # spremlja vse poti, ki bodo obiskane
-    vrsta = [[start]]
- 
-    # vrne pot, če je start že na začetku enak cilju
-    if start == cilj:
-        return(0)
- 
-    # zanka teče dokler ne preveri vseh možnih poti
-    while vrsta:
-        # doda (pop) prvo pot iz vrste
-        pot = vrsta.pop(0)
-        # dobimo zadnje vozlišče s poti
-        vozlisce = pot[-1]
-        if vozlisce not in obiskani:
-            sosedje = graph[vozlisce]
-            # gre skozi vsa sosednja vozlišča, konstruira novo pot in
-            # jo doda v vrsto
-            for sosed in sosedje:
-                nova_pot = list(pot)
-                nova_pot.append(sosed)
-                vrsta.append(nova_pot)
-                # vrne pot, če je sosed cilj
-                if sosed == cilj:
-                    return nova_pot
- 
-            # označi vozlišče, ko je obiskano (ga doda v seznam obiskanih)
-            obiskani.append(vozlisce)
- 
-    # v primeru, ko ni poti med dvema vozliščema
-    return False
-\end{verbatim}
-
-Radi bi dobili povprečno razdaljo med vozlišči, zato definiramo funkcijo \texttt{dolzine(graph)}, kjer dobimo razdalje vseh vozlišč od začetnega vozlišča  podane v seznamu. Uporabimo že napisano funkcijo  $\texttt{bfs\_najkrajsa\_pot}$.  Ko dobimo ta seznam dolžin, vrednosti seštejemo in delimo s številom vozlišč (brez začetnega).
-
+%Najprej sva zaradi lažje predstave in enostavnosti vzela kar primer drevesa:
+%
+%\begin{verbatim} 
+%graph = {"A": ["B", "D"],
+%         "B": ["A","C"],
+%         "C": ["B"],
+%         "D": ["A","E"],
+%         "E": ["D"]}
+%\end{verbatim}
+%
+%Za lažjo predstavo ga narišimo:
+%\Tree [.A [.B  C ] [.D  E ] ]
+%\newline
+%Da lahko narišemo drevo moramo naložiti paket \texttt{qtree}.
+%\newline
+Radi bi dobili povprečno razdaljo med vozlišči, zato definiramo funkcijo \texttt{dolzine(graph)}.
 \begin{verbatim}
 def dolzine(graph):
-    s = []
-    k = list(graph.keys()) #vsa vozlišča spravimo v seznam
-    for i in range(1,len(k)):
-        s.append(len(bfs_najkrajsa_pot(graph, k[0],k[i]))-1)
-    return(sum(s)/(len(k)-1))
+    s = 0
+    graph = Graph(graph)
+    s = graph.average_distance() #izračuna povprečno razdaljo med vozlišči
+    return(s)
 \end{verbatim}
 
 Sedaj bi radi vključili bližnjico v \texttt{graph}, ki bi minimizirala povprečno razdaljo med vozlišči. Za vhod vzamemo graf, za izhod pa dobimo trojico, v katerem sta prva dva člena vozlišči, med katerima poteka bližnjica, tretji člen pa nam da minimalno povprečno razdaljo med vozlišči.
 
 \begin{verbatim}
 def bliznjica(graph):
-    #Trojica bližnjica (med dvema vozliščema), povprečna razdalja med vozlišči
     m = (0,0,99999999999999)
     povezave = [] #seznam preverjenih povezav
-    k = list(graph.keys())
+    k = list(graph.keys()) #seznam vozlišč
     for i in range(0,len(k)):
         for j in range(0,len(k)):
             #če povezave še ni in sta različni točki
@@ -156,7 +101,7 @@ def bliznjica(graph):
     return(m)
 \end{verbatim}
 
-Poglejmo, kako je če dodamo 2 bližnjici v drevo. Najprej poiščemo prvo bližnjico z že napisanim programom \texttt{bliznjica}, jo dodamo v drevo in nato z istim postopkom poiščemo še drugo bližnjico na novem drevesu. Koda nam vrne peterico: prva dva člena sta vozlišči, med katerima poteka prva bližnjica, druga dva vozlišči med katerima poteka druga bližnjica ter peti člen minimalna povprečna razdalja med vozlišči. 
+Poglejmo, kako je če dodamo 2 bližnjici v drevo. Najprej poiščemo prvo bližnjico z že napisanim programom \texttt{bliznjica}, jo dodamo v drevo in nato z istim postopkom poiščemo še drugo bližnjico na novem grafu. Koda nam vrne peterico: prva dva člena sta vozlišči, med katerima poteka prva bližnjica, druga dva vozlišči med katerima poteka druga bližnjica ter peti člen minimalna povprečna razdalja med vozlišči. 
 
 \begin{verbatim}
 def dve_bliznjici1(graph, prva_bliznjica):
@@ -164,7 +109,7 @@ def dve_bliznjici1(graph, prva_bliznjica):
     najboljsi_bliznjici = (0,0,0,0,0)
     prva = prva_bliznjica           #Prvo bližnjico že poznamo
     graph[prva[0]].append(prva[1])    #Dodamo v drevo
-    graph[prva[1]].append(prva[0])  
+    graph[prva[1]].append(prva[0])
     druga = bliznjica(graph)          #Poiščemo drugo bližnjico
     najboljsi_bliznjici = (prva[0],prva[1],druga[0],druga[1],druga[2])
     graph[prva[0]].remove(prva[1])   #Izbrišemo bližnjico iz grafa
@@ -173,9 +118,8 @@ def dve_bliznjici1(graph, prva_bliznjica):
 \end{verbatim}
 
 Naslednja funkcija je sestavljena na podoben način kot za eno bližnjico. Preveri vse možne povezave, hkrati pa preverja, če je to povezavo že pregledala. Z zgornjo funkcijo se razlikuje v tem, da zgornja funkcija že predpostavi, da poznamo prvo najboljšo bližnjico, tukaj pa na novo izračunamo 2 najboljši bližnjici.
-
+\small
 \begin{verbatim}
-
 def dve_bliznjici2(graph):
     m2 = (0,0,0,0,99999999999999)
     preverjene = []
@@ -191,7 +135,9 @@ def dve_bliznjici2(graph):
                                 if k[j] != k[l]:
                                     if k[i] != k[j]:
                                         if (k[i],k[s]) != (k[j],k[l]):
-                                            if (k[s],k[i]) != (k[l],k[j]) and (k[s],k[i]) != (k[j],k[l]) and (k[i],k[s]) != (k[l],k[j]):
+                                            if (k[s],k[i]) != (k[l],k[j]) and 
+				(k[s],k[i]) != (k[j],k[l]) and(k[i],k[s]) != (k[l],k[j]):
+# (zamaknjeno samo zaradi lažjega prikaza)
                                                 if (k[i], k[s],k[j],k[l]) not in preverjene:
                                                     graph[k[i]].append(k[s])
                                                     graph[k[j]].append(k[l])
@@ -211,10 +157,9 @@ def dve_bliznjici2(graph):
                                                     g.append((k[i], k[s],k[j],k[l]))
     return(m2)
 \end{verbatim}
+\normalsize
 
-
-
-V primeru, ko na drevo, ki smo ga izbrali zgoraj, dodamo le eno bližnjico, nam funkcija \texttt{bliznjica} vrne \texttt{('C', 'A', 1.25) }, torej je najboljša bližnjica med C in A in sicer v tem primeru pride povprečna razdalja med vozlišči 1.25. Če dodamo dve bližnjici v drevo, dobimo \texttt{('C', 'A', 'E', 'A', 1.0)}, torej dodamo še bližnjico med A in E, ter tako dobimo minimalno povprečno razdaljo med vozlišči 1.0.
+%V primeru, ko na drevo, ki smo ga izbrali zgoraj, dodamo le eno bližnjico, nam funkcija \texttt{bliznjica} vrne \texttt{('C', 'A', 1.25) }, torej je najboljša bližnjica med C in A in sicer v tem primeru pride povprečna razdalja med vozlišči 1.25. Če dodamo dve bližnjici v drevo, dobimo \texttt{('C', 'A', 'E', 'A', 1.0)}, torej dodamo še bližnjico med A in E, ter tako dobimo minimalno povprečno razdaljo med vozlišči 1.0.
 
 \section{Primeri naključnih dreves}
 
@@ -239,45 +184,45 @@ Poskusimo sedaj na malo večjih drevesih in podatke zapišimo v tabelo:
  \hline
  Število vozlišč& Povprečna razdalja med vozlišči &Povp. razd. med vozlišči, če vključimo 1 bližnjico&Povp. razd. med vozlišči, če vključimo 2 bližnjici\\
  \hline
- 10   & 3.111    &1.778&   1.556\\
-20&  5.737  & 3.526   &2.526\\
- 30 &6.724 & 4.931& 3.517\\
- 50    &7.551 & 4.367& 3.694\\
- 100&  9.040  & 5.909&4.394\\
+ 10   & 2.711    &2.311&   2.089\\
+ 30 &6.609 & 4.676& 4.156\\
+ 50    &8.286 & 5.757& 5.295\\
+ 70&10.248&7.274&6.216\\
+ 100&  11.223  & 8.905&7.420\\
+ 
  \hline
 \end{tabular}
-\\[0.5cm]
+
 \section{Časovna zahtevnost}
 Opazimo, da koda pri drevesih s 100 vozlišči dela že kar počasi, saj mora preveriti vse povezave. Poglejmo časovno zahtevnost algoritma. Funkcija sprejme argumente n, m in \texttt{stevilo\_bliznjic}. n je število vozlišč, m pa število ponovitev. Če je \texttt{stevilo\_bliznjic} enako 1, funkcija uporabi funkcijo \texttt{bliznjica()}, če 2 \texttt{dve\_bliznjici1()} in 3 \texttt{dve\_bliznjici2()}. Funkcija vrne potreben čas.
 \begin{verbatim}
 def casovna_zahtevnost(n,m,stevilo_bliznjic):
     import time
+    funkcija = [bliznjica, dve_bliznjici1, dve_bliznjici2][stevilo_bliznjic-1]
     start = time.time()
-    i = 0
-    if stevilo_bliznjic == 1:
-        while i<m:
-            drevo = graphs.RandomTree(n).to_dictionary()
-            bliznjica(drevo)
-            i += 1
-    if stevilo_bliznjic == 2:
-        while i<m:
-            drevo = graphs.RandomTree(n).to_dictionary()
-            bliz = bliznjica(drevo)
-            dve_bliznjici1(drevo,bliz)
-            i += 1
-    if stevilo_bliznjic == 3:
-         while i<m:
-            drevo = graphs.RandomTree(n).to_dictionary()
-            dve_bliznjici2(drevo)
-            i += 1
+    for i in xrange(m):
+        if funkcija == dve_bliznjici1:
+            drevo=graphs.RandomTree(n).to_dictionary()
+            funkcija(drevo,bliznjica(drevo))
+        else:
+            funkcija(graphs.RandomTree(n).to_dictionary())
     konec = time.time()
     return(konec-start)
+\end{verbatim}
+Poglejmo nekaj primerov za lažjo predstavo:
+\begin{verbatim}
+casovna_zahtevnost(200,1,1)      57.819862842559814
+casovna_zahtevnost(10,100,2)     0.9815769195556641
+casovna_zahtevnost(10,100,3)     52.104007959365845
+casovna_zahtevnost(20,100,1)     3.494917869567871
+casovna_zahtevnost(120,130,1)    1285.5924899578094
 \end{verbatim}
 Časovna zahtevnost glede na število vozlišč:
 \begin{verbatim}
 casovna_vozlisca = []
-for i in range(4,20):
-    casovna_vozlisca.append(casovna_zahtevnost(i,20,1))
+for i in range(4,31):
+    # drevesa z od 4 do 30 vozlišči, ponovimo 100x, 1 bližnjica
+    casovna_vozlisca.append(casovna_zahtevnost(i,100,1)) 
 casovna_vozlisca
 \end{verbatim}
 \begin{center}
@@ -288,7 +233,7 @@ casovna_vozlisca
  Koliko se povprečna razdalja med vozlišči zmanjša, ko vključimo v drevo najboljšo bližnjico?
 \newline
 
-Pogledamo, za koliko se spremeni povprečna razdalja. Funkcija \texttt{ razlika\_ razdalj } sprejme argumenta n, m ter \texttt{ stevilo\_bliznjic}. Označimo n kot število vozlišč drevesa, m število ponovitev in \texttt{stevilo\_bliznjic} (1 ali 2) število bližnjic, ki jih dodamo v graf. Vrne par, kjer prvo število predstavlja povprečno število razdalj v drevesu brez bližnjice in drugo v drevesu z bližnjico. 
+Pogledamo, za koliko se spremeni povprečna razdalja. Funkcija \texttt{ razlika\_ razdalj } sprejme argumenta n, m ter \texttt{ stevilo\_bliznjic}. Označimo n kot število vozlišč drevesa, m število ponovitev in \texttt{stevilo\_bliznjic} (1 ali 2) število bližnjic, ki jih dodamo v graf. Vrne par, kjer prvo število predstavlja povprečno razdaljo v drevesu brez bližnjice in drugo v drevesu z bližnjico. 
 \begin{verbatim}
 def razlika_razdalj(n,m, stevilo_bliznjic):
     i = 0
@@ -321,13 +266,13 @@ Imamo 30 vozlišč, postopek ponovimo 70x, vključimo 1 bližnjico:
 \begin{verbatim}
 razlika_razdalj(30,70,1),
 \end{verbatim}
-vrne nam (5.720, 3.471).
+vrne nam recimo (5.720, 3.471).
 Če imamo 15 vozlišč, postopek ponovimo 50x, vključimo 2  bližnjici: (3.587, 1.984).
-
-Spreminjanje razdalje glede na število vozlišč. Gledamo, za koliko se spremeni povprečna razdalja v drevesu z od 4 do 20 vozlišči na 100 ponovitev če dodajamo eno bližnjico:
+\\[0.5cm]
+Spreminjanje razdalje glede na število vozlišč. Gledamo, za koliko se spremeni povprečna razdalja v drevesu z od 4 do 30 vozlišči na 100 ponovitev, če dodajamo eno bližnjico:
 \begin{verbatim}
 razdalje_vozlisca = []
-for i in range(4,20):
+for i in range(4,31):
     m = razlika_razdalj(i,100,1)
     razdalje_vozlisca.append(m)
 razdalje_vozlisca
@@ -340,7 +285,17 @@ Poskusimo narisati v programu R:
 \end{center}
 
 
-Ugotovila sva, da čas, ki ga porabimo za iskanje bližnjice v drevesu eksponentno raste s številom vozlišč, kar je tudi pričakovan rezultat.
+Ugotovila sva, da čas, ki ga porabimo za iskanje bližnjice v drevesu eksponentno raste s številom vozlišč, kar je tudi pričakovan rezultat. Pričakovano je tudi, da več kot je ponovitev, daljši je čas izvajanja algoritma, prav tako traja dlje, če namesto ene bližnjice iščemo dve.
 \newline
-Opazila sva tudi, da se povprečna razdalja med vozlišči, ko vključimo eno bližnjico, manjša in sicer večja je razlika med povprečno razdaljo med vozlišči v drevesu in povprečno razdaljo, ko vključimo eno bližnjico, ko večamo število vozlišč. 
+Opazila sva tudi, da se povprečna razdalja med vozlišči, ko vključimo eno bližnjico, zmanjša in sicer razlika med povprečno razdaljo med vozlišči v drevesu in povprečno razdaljo z eno bližnjico je večja, ko večamo število vozlišč. 
+\newline
+Ko gledamo, koliko v odstotkih je ta sprememba, ugotovimo, da je okoli 80\%, torej, ko dodamo bližnjico, se v povprečju zmanjša povprečna razdalja med vozlišči za okoli 80\%.
+\newline
+Naš primer (razlika v \%):
+\begin{verbatim}
+82.55934   79.53340   80.27466   78.90967   79.62269   80.00404   79.67778
+79.52475   79.39057   78.85268   79.16993   79.14651   78.53694   78.42466
+78.72314   78.21699   77.77059   78.25767   78.97192   77.59482   78.14983
+79.05210   77.54679   78.61552   78.03397   78.08158   80.03028
+\end{verbatim}
 \end{document}
