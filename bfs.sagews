@@ -14,6 +14,7 @@ def bliznjica(graph):
     #Trojica bližnjica (med dvema vozliščema), povprečna razdalja med vozlišči
     m = (0,0,99999999999999)
     povezave = [] #seznam preverjenih povezav
+    graph = graph.to_dictionary()
     k = list(graph.keys())
     for i in range(0,len(k)):
         for j in range(0,len(k)):
