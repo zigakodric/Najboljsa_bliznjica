@@ -14,7 +14,6 @@ def bliznjica(graph):
     #Trojica bližnjica (med dvema vozliščema), povprečna razdalja med vozlišči
     m = (0,0,99999999999999)
     povezave = [] #seznam preverjenih povezav
-    graph = graph.to_dictionary()
     k = list(graph.keys())
     for i in range(0,len(k)):
         for j in range(0,len(k)):
@@ -35,8 +34,8 @@ def bliznjica(graph):
                         m = (k[j],k[i], dol)
     return(m)
 
-#funkcija uporabi funkcijo za iskanje ene bližnjice
-#Predpostavimo, da prvo najboljšo bližnjico že poznamo.Funkcija jo doda v drevo in
+#Funkcija uporabi funkcijo za iskanje ene bližnjice.
+#Predpostavimo, da prvo najboljšo bližnjico že poznamo. Funkcija jo doda v drevo in
 # nato poišče v novem grafu
 def dve_bliznjici1(graph, prva_bliznjica):
     #Najboljši bližnjici. Vrne peterico prve najboljše bližnjice
@@ -46,7 +45,7 @@ def dve_bliznjici1(graph, prva_bliznjica):
     najboljsi_bliznjici = (0,0,0,0,0)
     prva = prva_bliznjica           #Prvo bližnjico že poznamo
     graph[prva[0]].append(prva[1])    #Dodamo v drevo
-    graph[prva[1]].append(prva[0])  
+    graph[prva[1]].append(prva[0])
     druga = bliznjica(graph)          #Poiščemo drugo bližnjico
     najboljsi_bliznjici = (prva[0],prva[1],druga[0],druga[1],druga[2])
     graph[prva[0]].remove(prva[1])   #Izbrišemo bližnjico iz grafa
@@ -129,7 +128,10 @@ dolzine(drevo150)
 #bliz = bliznjica(drevo150)
 #bliz
 
-#Pogledamo, za koliko se spremeni povprečna razdalja. Funkcija razlika_razdalj sprejme argumenta n,m ter stevilo_bliznjic. n je število vozlišč drevesa, m število ponovitev in stevilo_bliznjic(1 ali 2) število bližnjic, ki jih dodamo v graf. Vrne par, kjer prvo število predstavlja povprečno število razdalj v drevesu brez bližnjice in drugo v drevesu z bližnjico. 
+# Pogledamo, za koliko se spremeni povprečna razdalja.
+# Funkcija razlika_razdalj sprejme argumenta n, m ter stevilo_bliznjic.
+# n je število vozlišč drevesa, m število ponovitev in stevilo_bliznjic(1 ali 2) število bližnjic, ki jih dodamo v graf.
+# Vrne par, kjer prvo število predstavlja povprečno število razdalj v drevesu brez bližnjice in drugo v drevesu z bližnjico.
 def razlika_razdalj(n,m, stevilo_bliznjic):
     i = 0
     seznam_razdalj_dve = []
@@ -165,48 +167,47 @@ rr
 #Dve bliznjici 50 ponovitev, 15 vozlišč
 rrr = razlika_razdalj(15,50,2)
 
-#Spreminjanje razdalje glede na število vozlišč
-#gledamo, za koliko se spremeni povprečna razdalja v drevesu z od 4 do 20 vozlišči na 100 ponovitev če dodajamo eno bližnjico
+#Spreminjanje razdalje glede na število vozlišč.
+#Gledamo, za koliko se spremeni povprečna razdalja v drevesu z od 4 do 20 vozlišči na 100 ponovitev, če dodajamo eno bližnjico
+#(V poročilu uporabljeno na drevesu z od 4 do 30 vozlišči)
 razdalje_vozlisca = []
-for i in range(4,20):
+for i in range(4,21):
     m = razlika_razdalj(i,100,1)
     razdalje_vozlisca.append(m)
-m
 razdalje_vozlisca
 
 #Časovna zahtevnost algoritma
-#Funkcija sprejme argumente n,m in stevilo_bliznjic. n je število vozlišč, m pa število ponovitev. Če je stevilo_bliznjic enako 1, funkcija uporabi funkcijo bliznjica(), če 2 dve_bliznjici1() in 3 dve_bliznjici2(). Funkcija vrne potreben čas.
+#Funkcija sprejme argumente n, m in stevilo_bliznjic. n je število vozlišč, m pa število ponovitev.
+# Če je stevilo_bliznjic enako 1, funkcija uporabi funkcijo bliznjica(), če 2 dve_bliznjici1()
+# in 3 dve_bliznjici2(). Funkcija vrne potreben čas.
 def casovna_zahtevnost(n,m,stevilo_bliznjic):
     import time
+    funkcija = [bliznjica, dve_bliznjici1, dve_bliznjici2][stevilo_bliznjic-1]
     start = time.time()
-    i = 0
-    if stevilo_bliznjic == 1:
-        while i<m:
-            drevo = graphs.RandomTree(n).to_dictionary()
-            bliznjica(drevo)
-            i += 1
-    if stevilo_bliznjic == 2:
-        while i<m:
-            drevo = graphs.RandomTree(n).to_dictionary()
-            bliz = bliznjica(drevo)
-            dve_bliznjici1(drevo,bliz)
-            i += 1
-    if stevilo_bliznjic == 3:
-         while i<m:
-            drevo = graphs.RandomTree(n).to_dictionary()
-            dve_bliznjici2(drevo)
-            i += 1
+    for i in xrange(m):
+        if funkcija == dve_bliznjici1:
+            drevo=graphs.RandomTree(n).to_dictionary()
+            funkcija(drevo,bliznjica(drevo))
+        else:
+            funkcija(graphs.RandomTree(n).to_dictionary())
     konec = time.time()
     return(konec-start)
 casovna_zahtevnost(200,1,1)
 casovna_zahtevnost(10,100,2)
 casovna_zahtevnost(10,100,3)
 casovna_zahtevnost(20,100,1)
-casovna_zahtevnost(120,130,1)
+#casovna_zahtevnost(120,130,1)
+# Rezultati so recimo (za primerjavo):
+# 57.819862842559814
+# 0.9815769195556641
+# 52.104007959365845
+# 3.494917869567871
+# 1285.5924899578094
 
-#Časovna zahtevnost glede na število vozlišč
+#Časovna zahtevnost glede na število vozlišč (v poročilu uporabljeno na
+# drevesih z od 4 do 30 vozlišči, ponovimo 100x namesto 20x)
 casovna_vozlisca = []
-for i in range(4,20):
+for i in range(4,21):
     casovna_vozlisca.append(casovna_zahtevnost(i,20,1))
 casovna_vozlisca
 
