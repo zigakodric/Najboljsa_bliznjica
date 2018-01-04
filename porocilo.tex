@@ -229,6 +229,36 @@ casovna_vozlisca
 \includegraphics[scale = 0.8]{casovna}\\ 
 \scriptsize{\textit{Graf 1: } Časovna zahtevnost algoritma glede na število vozlišč .}
 \end{center}
+\section{Približek drugi bližnjici}
+Iskanje dveh najboljših bližnjic se je izkazalo za časovno zelo zahtevno. Zato naju je zanimalo ali obstaja način, da najdemo zadovljiv približek. Zato sva se odločila, da pogledava kako dobri bližnjici najde program, ki namesto dveh bližnjic naenkrat išče dvakrat najboljšo bližnjico. Torej najde prvo najboljšo bližnjico, jo doda v drevo in nato v tem grafu poišče najboljšo bližnjico. Primerjala sva razlike povprečnih razdalj v grafih z različnimi števili vozlišč. Dobila sva naslednjo tabelo: \newline
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{lllllllllllll}
+Razlika razdalje/Št. vozlišč & 4 & 5 & 6 & 7     & 8     & 9 & 10 & 11 & 12 & 13    & 14 & 15 \\
+Razlika razdalje             & 0 & 0 & 0 & 0,048 & 0,036 & 0 & 0  & 0  & 0  & 0,075 & 0  & 0 
+\end{tabular}
+\end{table}
+\newline
+Če generiramo 50 dreves z 12 vozlišči in pogledamo razliko povprečnih razdalj, dobimo, da je v povprečju razlika le 0,04. V primeru 50 dreves z 20 vozlišči ponovno dobimo, da je napaka enaka 0,04. \newline
+Poglejmo si še časovno zahtevnost funkcij. Pogledala sva si, koliko časa potrebujeta funkcijo za izračun najboljših bližnjic na enakih drevesih z od 4 do 15 vozlišči. Dobila sva tabelo: \newline
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+                        & 4      & 5      & 6      & 7      & 8      & 9      & 10    & 11    & 12   & 13    & 14    \\ \hline
+najboljsa\_bliznjica1() & 0.0008 & 0.0012 & 0.0023 & 0.0035 & 0.0056 & 0.0095 & 0.012 & 0.015 & 0018 & 0.026 & 0.04  \\ \hline
+najboljsa\_bliznjica2() & 0.0009 & 0.0037 & 0.0123 & 0.0356 & 0.094  & 0.24   & 0.65  & 1.29  & 2.68 & 5.3   & 10.15 \\ \hline
+\end{tabular}
+\end{table}
+\newline
+
+Če zgeneriramo 10 grafov z 15 vozlišči bo funkcija dve_bliznjici1() v povprečju porabila 0.037 sekunde, medtem ko funkcija dve_bliznjici2() porabi 18.9 sekund. Izkaže se torej, da se nam sploh v večjih grafih bolj splača uporabiti fukncijo dve_bliznjici1(), saj je napaka relativno majhna, hkrati pa je funkcija veliko hitrejša.
+
+
 \section{Ugotovitve}
  Koliko se povprečna razdalja med vozlišči zmanjša, ko vključimo v drevo najboljšo bližnjico?
 \newline
