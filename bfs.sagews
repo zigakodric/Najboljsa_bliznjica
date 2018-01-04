@@ -2,50 +2,13 @@
 
 
 
-#BFS
-def bfs_najkrajsa_pot(graph, start, cilj):
-    # sledi že obiskanim vozliščem
-    obiskani = []
-    # spremlja vse poti, ki bodo obiskane
-    vrsta = [[start]]
- 
-    # vrne pot, če je start že na začetku enak cilju
-    if start == cilj:
-        return(0)
- 
-    # zanka teče dokler ne preveri vseh možnih poti
-    while vrsta:
-        # doda (pop) prvo pot iz vrste
-        pot = vrsta.pop(0)
-        # dobimo zadnje vozlišče s poti
-        vozlisce = pot[-1]
-        if vozlisce not in obiskani:
-            sosedje = graph[vozlisce]
-            # gre skozi vsa sosednja vozlišča, konstruira novo pot in
-            # jo doda v vrsto
-            for sosed in sosedje:
-                nova_pot = list(pot)
-                nova_pot.append(sosed)
-                vrsta.append(nova_pot)
-                # vrne pot, če je sosed cilj
-                if sosed == cilj:
-                    return nova_pot
- 
-            # označi vozlišče, ko je obiskano (ga doda v seznam obiskanih)
-            obiskani.append(vozlisce)
- 
-    # v primeru, ko ni poti med dvema vozliščema
-    return False
 
-# dobimo razdaljo vseh vozlišč od začetnega vozlišča, podano v seznamu
-# ker hočemo povprečno razdaljo med vozlišči,
-# moramo sešteti vse razdalje in deliti s številom vozlišč (brez začetnega)
+#Izračuna povprečno razdaljo med vozlišči
 def dolzine(graph):
-    s = []
-    k = list(graph.keys())
-    for i in range(1,len(k)):
-        s.append(len(bfs_najkrajsa_pot(graph, k[0],k[i]))-1)
-    return(sum(s)/(len(k)-1))
+    s = 0
+    graph = Graph(graph)
+    s = graph.average_distance()
+    return(s)
 
 def bliznjica(graph):
     #Trojica bližnjica (med dvema vozliščema), povprečna razdalja med vozlišči
