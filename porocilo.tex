@@ -11,6 +11,7 @@
 \usepackage{amsmath} 
 \usepackage{qtree}
 \usepackage{hyperref}
+\usepackage{float}
 
 
 
@@ -101,7 +102,7 @@ def bliznjica(graph):
     return(m)
 \end{verbatim}
 
-Poglejmo, kako je če dodamo 2 bližnjici v drevo. Funkcija je sestavljena na podoben način kot za eno bližnjico. Preveri vse možne povezave, hkrati pa preverja, če je to povezavo že pregledala. 
+Poglejmo, kako je, če dodamo 2 bližnjici v drevo. Funkcija je sestavljena na podoben način kot za eno bližnjico. Preveri vse možne povezave, hkrati pa preverja, če je to povezavo že pregledala. 
 \small
 \begin{verbatim}
 def dve_bliznjici2(graph):
@@ -142,7 +143,7 @@ def dve_bliznjici2(graph):
     return(m2)
 \end{verbatim}
 \normalsize
-Ker pa je funkcija za iskanje dveh bližnjic časovno zahtevna, naju je zanimalo če lahko poiščemo dober plibližek dveh najboljših bližnjic. Zato sva sestavilo funkcijo \texttt{najboljsa_bliznjica1(). Najprej poiščemo prvo bližnjico z že napisanim programom \texttt{bliznjica}, jo dodamo v drevo in nato z istim postopkom poiščemo še drugo bližnjico na novem grafu. Koda nam vrne peterico: prva dva člena sta vozlišči, med katerima poteka prva bližnjica, druga dva vozlišči med katerima poteka druga bližnjica ter peti člen minimalna povprečna razdalja med vozlišči. V nadaljevanju sva tudi analizirala, kako dober približek bližnjic nam vrne ta funkcija.
+Ker pa je funkcija za iskanje dveh bližnjic časovno zahtevna, naju je zanimalo, če lahko poiščemo dober približek dveh najboljših bližnjic. Zato sva sestavila funkcijo \texttt{najboljsa\_bliznjica1()}. Najprej poiščemo prvo bližnjico z že napisanim programom \texttt{bliznjica}, jo dodamo v drevo in nato z istim postopkom poiščemo še drugo bližnjico na novem grafu. Koda nam vrne peterico: prva dva člena sta vozlišči, med katerima poteka prva bližnjica, druga dva vozlišči med katerima poteka druga bližnjica ter peti člen minimalna povprečna razdalja med vozlišči. V nadaljevanju sva tudi analizirala, kako dober približek bližnjic nam vrne ta funkcija.
 
 \begin{verbatim}
 def dve_bliznjici1(graph, prva_bliznjica):
@@ -230,32 +231,35 @@ casovna_vozlisca
 \scriptsize{\textit{Graf 1: } Časovna zahtevnost algoritma glede na število vozlišč .}
 \end{center}
 \section{Približek drugi bližnjici}
-Iskanje dveh najboljših bližnjic se je izkazalo za časovno zelo zahtevno. Zato naju je zanimalo ali obstaja način, da najdemo zadovljiv približek. Zato sva se odločila, da pogledava kako dobri bližnjici najde program, ki namesto dveh bližnjic naenkrat išče dvakrat najboljšo bližnjico. Torej najde prvo najboljšo bližnjico, jo doda v drevo in nato v tem grafu poišče najboljšo bližnjico. Primerjala sva razlike povprečnih razdalj v grafih z različnimi števili vozlišč. Dobila sva naslednjo tabelo: \newline
-\begin{table}[]
+Iskanje dveh najboljših bližnjic se je izkazalo za časovno zelo zahtevno. Zato naju je zanimalo ali obstaja način, da najdemo zadovoljiv približek. Zato sva se odločila, da pogledava kako dobri bližnjici najde program, ki namesto dveh bližnjic naenkrat išče dvakrat najboljšo bližnjico. Torej najde prvo najboljšo bližnjico, jo doda v drevo in nato v tem grafu poišče najboljšo bližnjico. Primerjala sva razlike povprečnih razdalj v grafih z različnimi števili vozlišč. Dobila sva naslednjo tabelo: \newline
+\begin{table}[H]
 \centering
-\caption{My caption}
+\caption{Razlike povpr. razdalj z različnimi št. vozlišč}
 \label{my-label}
 \begin{tabular}{lllllllllllll}
 Razlika razdalje/Št. vozlišč & 4 & 5 & 6 & 7     & 8     & 9 & 10 & 11 & 12 & 13    & 14 & 15 \\
 Razlika razdalje             & 0 & 0 & 0 & 0,048 & 0,036 & 0 & 0  & 0  & 0  & 0,075 & 0  & 0 
 \end{tabular}
 \end{table}
-\newline
+
 Če generiramo 50 dreves z 12 vozlišči in pogledamo razliko povprečnih razdalj, dobimo, da je v povprečju razlika le 0,04. V primeru 50 dreves z 20 vozlišči ponovno dobimo, da je napaka enaka 0,04. \newline
-Poglejmo si še časovno zahtevnost funkcij. Pogledala sva si, koliko časa potrebujeta funkcijo za izračun najboljših bližnjic na enakih drevesih z od 4 do 15 vozlišči. Dobila sva tabelo: \newline
-\begin{table}[]
-\centering
-\caption{My caption}
+Poglejmo si še časovno zahtevnost funkcij. Pogledala sva si, koliko časa potrebujeta funkciji za izračun najboljših bližnjic na enakih drevesih z od 4 do 15 vozlišči. Dobila sva tabelo: 
+\begin{table}[H]
+
+\caption{Časovna zahtevnost}
 \label{my-label}
-\begin{tabular}{llllllllllll}
+\begin{tabular}{@{\hspace{-2cm}}llllllllllll}
                         & 4      & 5      & 6      & 7      & 8      & 9      & 10    & 11    & 12   & 13    & 14    \\ 
-najboljsa\_bliznjica1() & 0.0008 & 0.0012 & 0.0023 & 0.0035 & 0.0056 & 0.0095 & 0.012 & 0.015 & 0018 & 0.026 & 0.04  \\ 
-najboljsa\_bliznjica2() & 0.0009 & 0.0037 & 0.0123 & 0.0356 & 0.094  & 0.24   & 0.65  & 1.29  & 2.68 & 5.3   & 10.15 \\ 
+najboljsa\_\\
+bliznjica1() & 0.0008 & 0.0012 & 0.0023 & 0.0035 & 0.0056 & 0.0095 & 0.012 & 0.015 & 0018 & 0.026 & 0.04  \\ 
+najboljsa\_\\
+bliznjica2() & 0.0009 & 0.0037 & 0.0123 & 0.0356 & 0.094  & 0.24   & 0.65  & 1.29  & 2.68 & 5.3   & 10.15 \\ 
 \end{tabular}
 \end{table}
-\newline
 
-Če zgeneriramo 10 grafov z 15 vozlišči bo funkcija$ dve_bliznjici1()$ v povprečju porabila 0.037 sekunde, medtem ko funkcija $dve_bliznjici2()$ porabi 18.9 sekund. Izkaže se torej, da se nam sploh v večjih grafih bolj splača uporabiti fukncijo $dve_bliznjici1()$, saj je napaka relativno majhna, hkrati pa je funkcija veliko hitrejša.
+
+
+Če zgeneriramo 10 grafov s 15 vozlišči bo funkcija \texttt{ dve\_bliznjici1()} v povprečju porabila 0.037 sekunde, medtem ko funkcija \texttt{dve \_bliznjici2()} porabi 18.9 sekund. Izkaže se torej, da se nam sploh v večjih grafih bolj splača uporabiti fukncijo \texttt{dve\_bliznjici1()}, saj je napaka relativno majhna, hkrati pa je funkcija veliko hitrejša.
 \section{Ugotovitve}
  Koliko se povprečna razdalja med vozlišči zmanjša, ko vključimo v drevo najboljšo bližnjico?
 \newline
@@ -304,11 +308,10 @@ for i in range(4,31):
     razdalje_vozlisca.append(m)
 razdalje_vozlisca
 \end{verbatim}
-
 Poskusimo narisati v programu R:
 \begin{center}
-\includegraphics[scale = 0.8]{povp_razd}\\ 
-\scriptsize{\textit{Graf 2: } Povprečna razdalja med vozlišči ter povprečna razdalja med vozlišči, če vključimo eno bližnjico.}
+\includegraphics[scale = 0.75]{povp_razd}\\ 
+\scriptsize{\textit{Graf 2: } Povprečna razdalja med vozlišči ter če vključimo eno bližnjico.}
 \end{center}
 
 
